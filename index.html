@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viettel Post</title>
+    <style>
+        body {
+            font-family: 'Dancing Script', Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #FCE35E, #FE598D, #E5B1FB);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            position: relative;
+        }
+        #image {
+            width: 250px;
+            height: 280px;
+            margin-bottom: 20px;
+        }
+        #label {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .buttons {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+        }
+        button {
+            padding: 35px 50px;
+            font-size: 40;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #yes {
+            background-color: #A9FECD;
+            color: white;
+            font-family: 'Bebas Neue', sans-serif; 
+            font-weight: bold;
+            font-size: 25px;
+        }
+        #yes:hover { 
+            background-color: #A9FECD;
+            transform: scale(1.1);
+        }
+        #no { 
+            background-color: #13DDFA; 
+            color: white; 
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: bold;
+            font-size: 25px;
+        } 
+        #no:hover { 
+            background-color: #13DDFA;
+            transform: scale(1.1);
+        }
+        #thankyou {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #4CAF50;
+            display: none;
+        }
+        .giphy-container {
+            position: absolute;
+            top: 50px;
+            left: 140px;
+            width: 300px;
+            height: 300px;
+            pointer-events: none;
+        }
+        .giphy-container iframe {
+            width: 100%;
+            height: 100%;
+        }
+        #vote-count {
+            font-size: 20px;
+            margin-top: 20px;
+            color: blue;
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="image" src="./images/lan_1.jpg" alt="Image">
+    </div>
+    <div class="giphy-container">
+        <iframe src="https://giphy.com/embed/LWk25R6XgfuSpY0xv4" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+    </div>
+    <div id="label">Nhìn em Lan xinh vậy mà bạn cũng muốn nói không sao?</div>
+    <div class="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+    <div id="thankyou">Thôi, nhìn Lan thế này mà bạn khen xinh, chắc tôi cũng không biết nói sao luôn!</div>
+    <div id="vote-count">Đã <span id="vote-number">35</span> lượt bình chọn em Lan không xinh</div>
+
+    <script>
+        const noButton = document.getElementById('no');
+        const yesButton = document.getElementById('yes');
+        const image = document.getElementById('image');
+        const label = document.getElementById('label');
+        const thankyouMessage = document.getElementById('thankyou');
+
+        const imageLabelPairs = [
+            { src: './images/lan_1.jpg', label: 'Nếu em Lan không xinh thì mình còn biết tin vào cái gì nữa đây?' },
+            { src: './images/lan_2.jpg', label: 'Bạn chọn No có nghĩ đến trái tim mong manh này không?' },
+            { src: './images/lan_3.png', label: 'Nếu em Lan không xinh, thì lý do gì mà mặt trời mọc mỗi sáng?' },
+            { src: './images/lan_4.jpg', label: 'Chẳng lẽ bạn không thấy ánh mắt em Lan như tia sáng cứu rỗi cuộc đời này sao?' },
+            { src: './images/lan_5.jpg', label: 'Nếu bạn chọn No, mình sẽ thức trắng cả đêm vì không hiểu tại sao!' },
+            { src: './images/lan_6.jpg', label: 'Một người như em Lan mà không được khen xinh, liệu thế giới này có còn công bằng không?' },
+            { src: './images/lan_7.jpg', label: 'Bạn hãy nhìn kỹ lần nữa đi... No không phải là đáp án đúng mà trái tim bạn muốn nói đâu!' }
+        ];
+
+        let clickCount = 0;
+
+        noButton.addEventListener('click', () => {
+            if (clickCount < imageLabelPairs.length - 1) {
+                clickCount++;
+                const { src, label: newLabel } = imageLabelPairs[clickCount];
+
+                // Update image and label
+                image.src = src;
+                label.textContent = newLabel;
+            } else {
+                // Sau khi bấm 7 lần, hiển thị alert "hello world"
+                alert("Bạn thật thà và dễ mến lắm, chúc bạn luôn gặp nhiều may mắn và thành công trong mọi việc nhé!"); // Hiển thị thông báo
+                noButton.style.display = 'none'; // Ẩn nút "No"
+                yesButton.style.display = 'none'; // Ẩn nút "Yes"
+            }
+        });
+
+        yesButton.addEventListener('click', () => {
+            // Show thank you message
+            thankyouMessage.style.display = 'block';
+
+            // Hide buttons
+            noButton.style.display = 'none';
+            yesButton.style.display = 'none';
+        });
+
+        let voteCount = 35; 
+        const voteNumber = document.getElementById('vote-number');
+        setInterval(() => {
+            voteCount++; // Tăng số lượt bình chọn
+            voteNumber.textContent = voteCount; // Cập nhật lại nội dung
+        }, 60000); // 60000ms = 1 phút
+    </script>
+</body>
+</html>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
